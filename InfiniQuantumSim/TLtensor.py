@@ -156,12 +156,17 @@ class CUGate(Gate):
 # Define the quantum circuit
 class QuantumCircuit:
     def __init__(self, num_qubits = None, circuit_dict = None):
-        self.num_qubits = num_qubits if circuit_dict is None else circuit_dict['number_of_qubits']
-        self.gates = []
-        """
-        create tensors in DB
-        """
+        if circuit_dict is None:
+            self.num_qubits = num_qubits
+        else:
+            n_qubit_key = [key for key in circuit_dict.keys() if "bit" in key and "n" in key]
+            if len(n_qubit_key) == 0:
+                raise ValueError("No key for number of qubits found in json!")
+            else:
+                n_qubit_key = n_qubit_key[0]
 
+            self.num_qubits = circuit_dict[n_qubit_key]
+        self.gates = []
 
         self.tensor_uniques ={"T0": np.array([1.+0.j, 0.+0.j])}
         self.einsum = ""

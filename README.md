@@ -10,7 +10,7 @@ To generate an SQL query from a quantum circuit provided as json you can use the
 
 ```
 {
-  "n_qubits": 3,
+  "number_of_qubits": 3,
   "gates": [
     {
         "qubits": [0],

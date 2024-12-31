@@ -22,3 +22,8 @@ if __name__ == "__main__":
         query = query_from_circuit(sys.argv[1])
     else:
         raise ValueError("Please provide filename to your json-circuit as argument to convert to SQL Query!")
+    
+    with open("query.txt", "w") as file:
+        file.write(query)
+
+    print(query)
