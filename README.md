@@ -32,7 +32,7 @@ This json quantum circuit would create the GHZ state for three qubits.
 
 When running the simulation.py, make sure there is PostgreSQL running on your machine with the following settings:
 
-The PostgreSQL installation should have a database with the following configuaration:
+Using PostgreSQL is optional and if not needed should be explicitly excluded. PostgreSQL should have the following configuaration:
 
 - POSTGRES_DB: 'postgres'
 - POSTGRES_USER: 'postgres'

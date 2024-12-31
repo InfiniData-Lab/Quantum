@@ -6,7 +6,6 @@ from numpy import array
 import numpy as np
 import sqlite3
 import duckdb
-import psycopg2 as psql
 
 import InfiniQuantumSim.sql_commands as sqlC
 import InfiniQuantumSim.TLtensor as tlt
@@ -17,6 +16,7 @@ def connect_and_setup_db(db: str = "sqlite"):
             con = sqlite3.connect(":memory:")
             cur = con.cursor()
         case "psql":
+            import psycopg2 as psql
             con = psql.connect(user='postgres', password='password', database='postgres', host='localhost')
             con.set_isolation_level(psql.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
             cur = con.cursor()
@@ -114,10 +114,8 @@ def db_time_contraction_eval(einstein, parameters, tensors, path_info, n_runs: i
 
     if "psql" not in skip_db:
         ## one-shot PostgreSQL performance
-        con = psql.connect(user='postgres', password='password', database='postgres', host='localhost')
-        con.set_isolation_level(psql.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
+        con, cur = connect_and_setup_db("psql")
 
-        cur = con.cursor()
         psql_mems = []
         psql_times = []
         contr_result = contraction_eval_psql(query, cur)
