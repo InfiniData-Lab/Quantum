@@ -41,7 +41,7 @@ The PostgreSQL installation should have a database with the following configuara
 
 If you want to run a customized version of the simulations please refer to the API Documentation below.
 
-To quickly do a test run without PostgreSQL and DuckDB run simulation.py with the argument `sqlite`.
+To quickly do a test run without PostgreSQL and DuckDB run simulation.py with the argument `sqlite` for an extensive test or `test` for a very quick test run.
 
 # Simulation API
 1. [Functions](#functions)
