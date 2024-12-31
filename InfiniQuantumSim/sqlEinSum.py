@@ -8,7 +8,7 @@ import sqlite3
 import duckdb
 import psycopg2 as psql
 
-import InfiniQuantumSim.sql_commands
+import InfiniQuantumSim.sql_commands as sqlC
 import InfiniQuantumSim.TLtensor as tlt
 
 def connect_and_setup_db(db: str = "sqlite"):
@@ -59,7 +59,7 @@ def db_time_contraction_eval(einstein, parameters, tensors, path_info, n_runs: i
         tic = timer()
         tracemalloc.clear_traces()
         mem_tic, _ = tracemalloc.get_traced_memory()
-        tensor_definitions = sql_commands.var_list_to_sql(tensors)
+        tensor_definitions = sqlC.var_list_to_sql(tensors)
         _, mem_toc = tracemalloc.get_traced_memory()
         toc = timer()
         eqc_tensor_mems.append(mem_toc - mem_tic)
@@ -69,7 +69,7 @@ def db_time_contraction_eval(einstein, parameters, tensors, path_info, n_runs: i
         tic = timer()
         tracemalloc.clear_traces()
         mem_tic, _ = tracemalloc.get_traced_memory()
-        contraction = sql_commands._einsum_notation_to_opt_sql(einstein, parameters, tensors, complex=True, path_info=path_info)
+        contraction = sqlC._einsum_notation_to_opt_sql(einstein, parameters, tensors, complex=True, path_info=path_info)
         _, mem_toc = tracemalloc.get_traced_memory()
         toc = timer()
         eqc_contr_mems.append(mem_toc - mem_tic)

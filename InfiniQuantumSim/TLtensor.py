@@ -1,6 +1,7 @@
 import json, random
 
 import numpy as np
+np.set_printoptions(legacy='1.25')
 import opt_einsum as oe
 import InfiniQuantumSim.sqlEinSum as ses
 
@@ -258,13 +259,17 @@ class QuantumCircuit:
         for gate_info in self.gates:
             ...
 
-    def to_query(self):
+    def to_query(self, complex=True):
         einstein, index_sizes, parameters = self.convert_to_einsum()
         opt_rg = oe.RandomGreedy(max_repeats=256, parallel=True)
         views = oe.helpers.build_views(einstein, index_sizes)
         _, path_info = oe.contract_path(einstein, *views, optimize=opt_rg)
 
-        return sql_einsum_query(einstein, parameters, self.tensor_uniques, path_info=path_info, complex=True)
+        if not complex:
+            for key, tensor in self.tensor_uniques.items():
+                self.tensor_uniques[key] = tensor.real
+
+        return sql_einsum_query(einstein, parameters, self.tensor_uniques, path_info=path_info, complex=complex)
 
 
     def convert_to_einsum(self):

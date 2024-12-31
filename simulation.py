@@ -1,11 +1,10 @@
-import sys, json, datetime
+import os, sys, json, datetime
 
 import InfiniQuantumSim.TLtensor as tlt
 
 def init_simulation_params():
     circuit_n_qubits = {
         'W': range(5,35),
-        'H': range(5,36),
         'QFT': range(5,25),
         'GHZ': range(5,35),
         'QPE': range(5,19)
@@ -21,18 +20,48 @@ def init_simulation_params():
     return circuit_n_qubits, circuits
 
 
+def init_test_params():
+    circuit_n_qubits = {
+        'W': range(5,10),
+        'GHZ': range(5,10),
+    } 
+
+    circuits = {
+        'GHZ': tlt.generate_ghz_circuit, 
+        'W': tlt.generate_w_circuit,
+    }
+
+    return circuit_n_qubits, circuits
+
+
 def save_results_to_json(results, fname = None):
     if fname is None:
-        fname = datetime.datetime.now().strftime("results/%m%d%y_MBP_QFTonly") + ".json"
+        fname = datetime.datetime.now().strftime("results/%m%d%y")
 
+    if fname[-5:] == ".json":
+         fname = fname[:-5]
+
+    if os.path.exists(fname + ".json"):
+        i = 1
+        while os.path.exists(fname + f"_{i}" + ".json"):
+            i += 1
+
+        fname += f"_{i}"
+
+    fname += ".json"
     with open(fname, "w") as file:
         json.dump(results, file)
 
 
-def simulation_benchmark(n_runs, circuit_n_qubits, circuits, mem_limit_bytes=2**34, time_limit_seconds=2**4):
+def simulation_benchmark(n_runs, circuit_n_qubits, circuits, mem_limit_bytes=2**34, time_limit_seconds=2**4, mem_db_only=False):
     results = {}
+    skip_db = []
+
+    if mem_db_only:
+         skip_db = ["psql", "ducksql"]
+
     for cname, circuit in circuits.items():
-        oom = ["psql", "ducksql"]
+        oom = skip_db
         results[cname] = {}
         progress = 0
         l_qbits = len(circuit_n_qubits[cname])-1
@@ -71,11 +100,21 @@ def simulation_benchmark(n_runs, circuit_n_qubits, circuits, mem_limit_bytes=2**
 
 
 if __name__ == "__main__":
+
+    mem_db_only = False
+    if len(sys.argv) > 1:
+        if sys.argv[1] in ["sqlite", "test"]:
+             mem_db_only = True
+             
     
     n_runs = 20
     
-    circuit_n_qubits, circuits = init_simulation_params()
+    if sys.argv[1] != "test":
+        circuit_n_qubits, circuits = init_simulation_params()
+    else:
+        circuit_n_qubits, circuits = init_test_params()
+        n_runs = 2
 
-    results = simulation_benchmark(n_runs, circuit_n_qubits, circuits)
+    results = simulation_benchmark(n_runs, circuit_n_qubits, circuits, mem_db_only=mem_db_only)
 
     save_results_to_json(results)

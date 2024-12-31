@@ -30,4 +30,135 @@ To generate an SQL query from a quantum circuit provided as json you can use the
 
 This json quantum circuit would create the GHZ state for three qubits.
 
-# API Usage
+When running the simulation.py, make sure there is PostgreSQL running on your machine with the following settings:
+
+The PostgreSQL installation should have a database with the following configuaration:
+
+- POSTGRES_DB: 'postgres'
+- POSTGRES_USER: 'postgres'
+- POSTGRES_PASSWORD: 'password'
+- HostPort: "5432"
+
+If you want to run a customized version of the simulations please refer to the API Documentation below.
+
+To quickly do a test run without PostgreSQL and DuckDB run simulation.py with the argument `sqlite`.
+
+# Simulation API
+1. [Functions](#functions)
+    - [sql_to_np](#sql_to_np)
+    - [generate_ghz_circuit](#generate_ghz_circuit)
+    - [generate_w_circuit](#generate_w_circuit)
+    - [generate_qft_circuit](#generate_qft_circuit)
+    - [generate_qpe_circuit](#generate_qpe_circuit)
+    - [generate_ghz_qft](#generate_ghz_qft)
+    - [generate_w_qft](#generate_w_qft)
+
+2. [Classes](#classes)
+    - [QuantumCircuit](#quantumcircuit)
+    - [Gate](#gate)
+
+
+## Functions
+
+### sql_to_np
+#### Parameters:
+- `db_result` (list): Database query result rows.
+- `expected_shape` (tuple): Shape of the resulting tensor.
+- `complex_flag` (bool, optional): If `True`, assumes complex values in the result.
+
+#### Returns:
+- `np.ndarray`: The constructed NumPy tensor.
+
+### generate_ghz_circuit
+#### Parameters:
+- `num_qubits` (int): Number of Qubits in the GHZ state preparation.
+- `reverse` (bool, optional): If `True`, the circuit will be reversed
+
+#### Returns:
+- `dict`: The constructed circuit as dict.
+
+### generate_w_circuit
+#### Parameters:
+- `num_qubits` (int): Number of Qubits in the GHZ state preparation.
+- `reverse` (bool, optional): If `True`, the circuit will be reversed
+
+#### Returns:
+- `dict`: The constructed circuit as dict.
+
+### generate_qft_circuit
+#### Parameters:
+- `num_qubits` (int): Number of Qubits in the GHZ state preparation.
+- `reverse` (bool, optional): If `True`, the circuit will be reversed
+
+#### Returns:
+- `dict`: The constructed circuit as dict.
+
+### generate_qpe_circuit
+#### Parameters:
+- `num_qubits` (int): Number of Qubits in the GHZ state preparation.
+
+#### Returns:
+- `dict`: The constructed circuit as dict.
+
+### generate_ghz_qft
+#### Parameters:
+- `num_qubits` (int): Number of Qubits in the GHZ state preparation.
+
+#### Returns:
+- `dict`: The constructed circuit as dict.
+
+### generate_w_qft
+#### Parameters:
+- `num_qubits` (int): Number of Qubits in the GHZ state preparation.
+
+#### Returns:
+- `dict`: The constructed circuit as dict.
+
+
+## Classes
+
+### QuantumCircuit
+Class for constructing and simulating quantum circuits.
+
+#### Constructor:
+```python
+QuantumCircuit(num_qubits: int = None, circuit_dict: dict = None)
+```
+
+#### Attributes:
+- `num_qubits` (int): Number of Qubits in the circuit
+- `gates` (list): List of gates in the circuit
+- `tensor_uniques` (dict): All unique tensors of the initial state and the gates in the circuit
+- `einsum`  (str): Einstein Summation Notation as str
+- `mps` (MPS | None): If simulation method "MPS" is used this contains the corresponding MPS Object
+- `con` (Connection | None): DB Connection if exists
+- `cur` (Cursor | None): DB Cursor if exists
+- `dispatcher` (dict): Gate dispatcher to map str gate names to corresponding gate method
+
+#### Methods:
+
+- `to_query(complex=True)`: Converts the circuit to a SQL query.
+- `convert_to_einsum()`: Converts the circuit to Einstein summation notation.
+- `run(contr_method='np')`: Runs the circuit using the specified contraction method.
+- `benchmark_circuit_performance(n_runs)`: Benchmarks the circuit's performance.
+- `export_circuit_query()`: Exports the circuit query.
+- `One-Qubit_Gate(qubit)`: possible gates: H, X, Y, Z
+- `Controlled-Gate(control_qubit, target_qubit)`: possible gates: CNOT, CY, CZ
+- `R(qubit, k)`: applies Phase Shift gate with parameter k
+- `RY(qubit, theta)`: applies Rotation around Y-axis of Bloch-Sphere with angle theta
+- `G(qubit, p)`: G(p) gate as described in [Cruz et al.](https://arxiv.org/pdf/1807.05572)
+
+
+### Gate
+Base class for quantum gates.
+
+#### Constructor:
+```python
+Gate(qubits: list, tensor: numpy.ndarray, name: str = None, two_qubit_gate: bool = False)
+```
+
+#### Attributes:
+- `qubits` (list): Qubits the gate acts on.
+- `tensor` (np.ndarray): Matrix representation of the gate.
+- `two_qubit_gate` (bool): Indicates if the gate is a two-qubit gate.
+- `gate_name` (str): Name of the gate.

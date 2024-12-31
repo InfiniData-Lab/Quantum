@@ -3,7 +3,7 @@ import sys, json
 from InfiniQuantumSim.TLtensor import QuantumCircuit
 
 
-def query_from_circuit(json_circuit):
+def query_from_circuit(json_circuit, complex=True):
     if isinstance(json_circuit, str):
         with open(json_circuit, 'r') as file:
             json_circuit = json.load(file)
@@ -14,7 +14,7 @@ def query_from_circuit(json_circuit):
     
     qc = QuantumCircuit(circuit_dict=json_circuit)
 
-    return qc.to_query()
+    return qc.to_query(complex=complex)
 
 
 if __name__ == "__main__":
