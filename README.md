@@ -2,10 +2,27 @@
 
 This repository contains the works associated with the Paper ["Quantum Data Managemen in the NISQ Era"](https://arxiv.org/pdf/2409.14111).
 
+In the [technical report](technical_report.pdf), we provide detailed experimental settings and comprehensive results in Appendices B3 and B4.
+
 
 # Reproducing the shown results
 
 The results shown in the paper can either be reproduced using the [benchmark notebook](benchmark.ipynb) or by running the [simulation script](simulation.py).
+Required packages for the Python installation can be installed using the command 
+
+`pip install -r requirements.txt`
+
+Here is a list of the included dependencies
+
+```
+duckdb==1.1.3
+jupyter_client==8.6.3
+jupyter_core==5.7.2
+numpy==2.2.1
+opt-einsum==3.3.0
+psycopg2-binary==2.9.10
+```
+
 To generate an SQL query from a quantum circuit provided as json you can use the [circuit_sqlgen file](circuit_sqlgen.py). A circuit should be of the following format:
 
 ```
