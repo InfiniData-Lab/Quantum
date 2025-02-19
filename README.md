@@ -1,4 +1,4 @@
-# Classical Simulation of Quantum Circuits using RDBMS
+# VLDB'25 vision paper "Data Management in the Noisy Intermediate-Scale Quantum Era"
 
 This repository contains the works associated with the Paper ["Quantum Data Managemen in the NISQ Era"](https://arxiv.org/pdf/2409.14111).
 
@@ -179,3 +179,15 @@ Gate(qubits: list, tensor: numpy.ndarray, name: str = None, two_qubit_gate: bool
 - `tensor` (np.ndarray): Matrix representation of the gate.
 - `two_qubit_gate` (bool): Indicates if the gate is a two-qubit gate.
 - `gate_name` (str): Name of the gate.
+
+# Citation
+
+```tex
+@article{hai2025qdmvision,
+  title={Data Management in the Noisy Intermediate-Scale Quantum Era},
+  author={Hai, Rihan and Hung, Shih-Han and Coopmans, Tim and Littau, Tim and Geerts, Floris},
+  journal={Proceedings of the VLDB Endowment},
+  year={2025},
+  publisher={VLDB Endowment},
+  note={to appear}
+```
