@@ -190,4 +190,5 @@ Gate(qubits: list, tensor: numpy.ndarray, name: str = None, two_qubit_gate: bool
   year={2025},
   publisher={VLDB Endowment},
   note={to appear}
+}
 ```
