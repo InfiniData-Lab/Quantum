@@ -1,9 +1,23 @@
 # VLDB'25 vision paper "Data Management in the Noisy Intermediate-Scale Quantum Era"
 
-This repository contains the works associated with the Paper ["Quantum Data Managemen in the NISQ Era"](https://arxiv.org/pdf/2409.14111).
+This repository contains the research and associated works related to the VLDB 2025 vision paper, ["Data Managemen in the NISQ Era"](https://arxiv.org/pdf/2409.14111).
 
-In the [technical report](technical_report.pdf), we provide detailed experimental settings and comprehensive results in Appendices B3 and B4.
+It includes supplementary materials, detailed experimental settings, and comprehensive results, particularly in **Appendices B3 and B4** of our [technical report](technical_report.pdf).
+This repository serves as a resource for researchers interested in **the intersection of classical database technologies and quantum computing**.
 
+# Citation
+
+### BibTeX
+```tex
+@article{hai2025qdmvision,
+  title={Data Management in the Noisy Intermediate-Scale Quantum Era},
+  author={Hai, Rihan and Hung, Shih-Han and Coopmans, Tim and Littau, Tim and Geerts, Floris},
+  journal={Proceedings of the VLDB Endowment},
+  year={2025},
+  publisher={VLDB Endowment},
+  note={to appear}
+}
+```
 
 # Reproducing the shown results
 
@@ -179,16 +193,3 @@ Gate(qubits: list, tensor: numpy.ndarray, name: str = None, two_qubit_gate: bool
 - `tensor` (np.ndarray): Matrix representation of the gate.
 - `two_qubit_gate` (bool): Indicates if the gate is a two-qubit gate.
 - `gate_name` (str): Name of the gate.
-
-# Citation
-
-```tex
-@article{hai2025qdmvision,
-  title={Data Management in the Noisy Intermediate-Scale Quantum Era},
-  author={Hai, Rihan and Hung, Shih-Han and Coopmans, Tim and Littau, Tim and Geerts, Floris},
-  journal={Proceedings of the VLDB Endowment},
-  year={2025},
-  publisher={VLDB Endowment},
-  note={to appear}
-}
-```
